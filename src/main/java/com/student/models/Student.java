@@ -2,6 +2,7 @@ package com.student.models;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 public class Student {
   @Id
@@ -9,7 +10,12 @@ public class Student {
   
   public String firstname;
   public String lastname;
+  
+  
+  @Indexed(unique = true)
   public String emailid;
+  
+  
   public String password;
   public String accounttype;
   

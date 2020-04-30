@@ -21,12 +21,12 @@ public class StudentController {
   @Autowired
   private StudentRepository repository;
   
-  
+  //Get all the records in the collection
   @RequestMapping(value = "/", method = RequestMethod.GET)
   public List<Student> getAllStudent() {
     return repository.findAll();
   }
-  
+  //Get the record of specified emailid
   @RequestMapping(value = "/{emailid}", method = RequestMethod.GET)
   public Student getStudentByEmailid(@PathVariable("emailid") String emailid) {
     return repository.findByEmailid(emailid);
@@ -36,24 +36,26 @@ public class StudentController {
   @RequestMapping(value = "/{emailid}", method = RequestMethod.PATCH)
   public @Valid void modifyStudentById(@PathVariable("emailid") String emailid, @Valid @RequestBody Student student) {
 	  
-	  Student prod = repository.findByEmailid(emailid);
+	  Student stud = repository.findByEmailid(emailid);
 	
 	  if(student.getPassword()!= null)
-          prod.setPassword(student.getPassword());
-	 
-	  
-   
-    repository.save(prod);
+          stud.setPassword(student.getPassword());
+	    repository.save(stud);
     
    
     
   }
   //Create a record in Mongodb
   @RequestMapping(value = "/", method = RequestMethod.POST)
-  public Student createPet(@Valid @RequestBody Student student) {
-    student.set_id(ObjectId.get());
-    repository.save(student);
-    return student;
+  public void createPet(@PathVariable("emailid") String emailid,@Valid @RequestBody Student student) {
+	  Student stud = repository.findByEmailid(emailid);
+	  if(student.getEmailid()== null) {
+		  student.set_id(ObjectId.get());
+		  repository.save(student);
+		    
+	  }
+	  
+    
   }
   //Delete using emailid
   @RequestMapping(value = "/{emailid}", method = RequestMethod.DELETE)
